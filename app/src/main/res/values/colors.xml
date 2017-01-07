@@ -2,4 +2,5 @@
 <resources>
     <color name="gray">#BDBDBD</color>
     <color name="lightgray">#EEEEEE</color>
+    <color name="white">#FFFFFF</color>
 </resources>

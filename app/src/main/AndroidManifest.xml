@@ -11,17 +11,18 @@
         android:theme="@style/mainAppTheme">
 
         <activity
-            android:name="it.langolonerd.app.MainActivity"
-            android:label="@string/app_name" >
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:name="it.langolonerd.app.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
