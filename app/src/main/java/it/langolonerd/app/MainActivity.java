@@ -20,7 +20,9 @@
 package it.langolonerd.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -67,7 +69,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        webView.loadUrl("http://www.langolonerd.it");
+        onNewIntent(getIntent());
     }
 
     private void visible() {
@@ -96,5 +98,16 @@ public class MainActivity extends Activity {
         version.setVisibility(View.VISIBLE);
         shadow.setVisibility(View.VISIBLE);
         webview.setVisibility(View.GONE);
+    }
+
+    protected void onNewIntent(Intent intent) {
+        String action = intent.getAction();
+        String data = intent.getDataString();
+        if (Intent.ACTION_VIEW.equals(action) && data != null) {
+            String page = data.substring(data.lastIndexOf("/") + 1);
+            webView.loadUrl("http://www.langolonerd.it/" + page);
+        }
+        else
+            webView.loadUrl("http://www.langolonerd.it");
     }
 }
