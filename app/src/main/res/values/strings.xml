@@ -3,6 +3,6 @@
     <string name="app_name">L\'angolo nerd</string>
     <string name="launcher_name">@string/app_name</string>
     <string name="activity_name">@string/launcher_name</string>
-    <string name="version">version 1.0</string>
-    <string name="app_version">1.0</string>
+    <string name="version">version 0.1b</string>
+    <string name="app_version">0.1b</string>
 </resources>
