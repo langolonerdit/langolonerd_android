@@ -40,7 +40,7 @@
         a:layout_alignParentBottom="true"
         a:layout_marginBottom="13dp"
         a:layout_centerHorizontal="true"
-        a:text="version 1.0"
+        a:text="@string/version"
         a:textAppearance="?android:attr/textAppearanceSmall"
         a:textColor="#444444" />
 

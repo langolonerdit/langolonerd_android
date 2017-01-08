@@ -32,8 +32,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
     private WebView webView;
     private CardView cardView;
 
@@ -48,11 +47,13 @@ public class MainActivity extends Activity
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.rgb(0, 102, 92));
 
+        // set webview params
         webView = (WebView) findViewById(R.id.webView1);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 
+        // set cardview params (used as img shadow)
         cardView = (CardView) findViewById(R.id.imageShadow1);
         cardView.setRadius(25);
         cardView.setCardElevation(50);
