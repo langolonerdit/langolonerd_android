@@ -13,9 +13,20 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread myThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(3000);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        myThread.start();
     }
 }
