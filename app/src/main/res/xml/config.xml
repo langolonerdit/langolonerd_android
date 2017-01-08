@@ -20,7 +20,7 @@
 * along with L'angolo nerd.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<widget id="com.langolonerd.it" version="0.4">
+<widget id="com.langolonerd.it" version="@string/app_version">
     <name>L'angolo nerd</name>
     <description>
         L'angolo nerd official app
