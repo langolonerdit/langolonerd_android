@@ -20,51 +20,70 @@
 package it.langolonerd.app;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
     private WebView webView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        setTheme(R.style.mainAppTheme);
-        setContentView(R.layout.webview);
+    public void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.main_activity);
         super.onCreate(savedInstanceState);
-        // enable Cordova apps to be started in the background
-        Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.getBoolean("cdvStartInBackground", false)) {
-            moveTaskToBack(true);
-        }
+
         // set statusbar color
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.rgb(0, 102, 92));
 
-        // progress bar while loading WebView
-        //final Activity activity = this;
-        final ProgressDialog pd = new ProgressDialog(this);
-        pd.setTitle("Caricamento");
-        pd.show();
-
         webView = (WebView) findViewById(R.id.webView1);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://www.langolonerd.it");
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 
-        // Remove progress bar
+        unvisible();
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                pd.dismiss();
+                visible();
             }
         });
+
+        webView.loadUrl("http://www.langolonerd.it");
+    }
+
+    private void visible() {
+        WebView webview = (WebView) findViewById(R.id.webView1);
+        ImageView logo = (ImageView) findViewById(R.id.imageView1);
+        ProgressBar bar = (ProgressBar) findViewById(R.id.progressBar1);
+        TextView version = (TextView) findViewById(R.id.textView1);
+
+        webview.setVisibility(View.VISIBLE);
+        logo.setVisibility(View.GONE);
+        bar.setVisibility(View.GONE);
+        version.setVisibility(View.GONE);
+    }
+
+    private void unvisible() {
+        WebView webview = (WebView) findViewById(R.id.webView1);
+        ImageView logo = (ImageView) findViewById(R.id.imageView1);
+        ProgressBar bar = (ProgressBar) findViewById(R.id.progressBar1);
+        TextView version = (TextView) findViewById(R.id.textView1);
+
+        logo.setVisibility(View.VISIBLE);
+        bar.setVisibility(View.VISIBLE);
+        version.setVisibility(View.VISIBLE);
+        webview.setVisibility(View.GONE);
     }
 }
