@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.langolonerd.it" version="1.0.0">
+    <name>L'angolo nerd</name>
+    <description>
+        L'angolo nerd official app
+    </description>
+    <author email="aronnebrivio@langolonerd.it" href="http://www.langolonerd.it">
+        Aronne Brivio
+    </author>
+    <content src="http://www.langolonerd.it" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="https://*/*" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-intent href="market:*" />
+    <preference name="loglevel" value="DEBUG" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="Fullscreen" value="false" />
+    <preference name="loadUrlTimeoutValue" value="70000"/>
+</widget>
