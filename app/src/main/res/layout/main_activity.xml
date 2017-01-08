@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
     a:layout_width="fill_parent"
     a:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
     a:background="#ffffff"
     a:orientation="vertical">
@@ -22,7 +21,6 @@
             a:layout_width="150dp"
             a:layout_height="150dp"
             a:src="@drawable/hdicon" />
-
     </android.support.v7.widget.CardView>
 
     <ProgressBar
