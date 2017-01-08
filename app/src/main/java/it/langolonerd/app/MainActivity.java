@@ -22,6 +22,7 @@ package it.langolonerd.app;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity
 {
     private WebView webView;
+    private CardView cardView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,10 @@ public class MainActivity extends Activity
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+
+        cardView = (CardView) findViewById(R.id.imageShadow1);
+        cardView.setRadius(25);
+        cardView.setCardElevation(50);
 
         unvisible();
 
@@ -68,9 +74,11 @@ public class MainActivity extends Activity
         ImageView logo = (ImageView) findViewById(R.id.imageView1);
         ProgressBar bar = (ProgressBar) findViewById(R.id.progressBar1);
         TextView version = (TextView) findViewById(R.id.textView1);
+        CardView shadow = (CardView) findViewById(R.id.imageShadow1);
 
         webview.setVisibility(View.VISIBLE);
         logo.setVisibility(View.GONE);
+        shadow.setVisibility(View.GONE);
         bar.setVisibility(View.GONE);
         version.setVisibility(View.GONE);
     }
@@ -80,10 +88,12 @@ public class MainActivity extends Activity
         ImageView logo = (ImageView) findViewById(R.id.imageView1);
         ProgressBar bar = (ProgressBar) findViewById(R.id.progressBar1);
         TextView version = (TextView) findViewById(R.id.textView1);
+        CardView shadow = (CardView) findViewById(R.id.imageShadow1);
 
         logo.setVisibility(View.VISIBLE);
         bar.setVisibility(View.VISIBLE);
         version.setVisibility(View.VISIBLE);
+        shadow.setVisibility(View.VISIBLE);
         webview.setVisibility(View.GONE);
     }
 }
