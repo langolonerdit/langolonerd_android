@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
         // set webview params
         webView = (WebView) findViewById(R.id.webView1);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setUserAgentString("WEBAPP");
         webView.setHorizontalScrollBarEnabled(false);
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 
