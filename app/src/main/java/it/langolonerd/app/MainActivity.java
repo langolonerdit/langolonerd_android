@@ -40,6 +40,14 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestHandle;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.ResponseHandlerInterface;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends Activity {
     private WebView webView;
@@ -49,9 +57,12 @@ public class MainActivity extends Activity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private static AsyncHttpClient httpclient = new AsyncHttpClient();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        sendToken();
+
         setContentView(R.layout.main_activity);
         super.onCreate(savedInstanceState);
 
@@ -86,6 +97,25 @@ public class MainActivity extends Activity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        // Register app to the server for push notifications
+    }
+
+    private void sendToken() {
+        String token = FirebaseInstanceId.getInstance().getToken();
+        RequestParams params = new RequestParams();
+        params.put("token", token);
+        httpclient.post("http://www.langolonerd.it/pushreg.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                System.out.println("SUCCESSO!!!!");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                System.out.println("Fallito ...");
+            }
+        });
     }
 
     private void visible() {
