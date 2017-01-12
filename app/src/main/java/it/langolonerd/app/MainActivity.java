@@ -4,12 +4,12 @@
  *
  * This file is part of L'angolo nerd Android application.
  *
- * OpenPGP is free software: you can redistribute it and/or modify
+ * L'angolo nerd is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * OpenPGP is distributed in the hope that it will be useful,
+ * L'angolo nerd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -42,7 +42,8 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import cz.msebera.android.httpclient.util.EncodingUtils;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class MainActivity extends Activity {
     private WebView webView;
@@ -94,12 +95,13 @@ public class MainActivity extends Activity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void sendToken() {
+    private String sendToken() throws UnsupportedEncodingException {
         // Send the Firebase token to the server
         // Used for push notification service
         String token = FirebaseInstanceId.getInstance().getToken();
-        byte[] post = EncodingUtils.getBytes("token="+token,"UTF-8");
-        webView.postUrl("http://www.langolonerd.it/pushreg.php", post);
+        String post = "token=" + URLEncoder.encode(token, "UTF-8");
+        //webView.postUrl("http://www.langolonerd.it/pushreg.php", post.getBytes());
+        return post;
     }
 
     private void visible() {
@@ -133,13 +135,21 @@ public class MainActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         String action = intent.getAction();
         String data = intent.getDataString();
+        String params = "";
+        try {
+            params = sendToken();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         if (Intent.ACTION_VIEW.equals(action) && data != null) {
-            sendToken();
             String page = data.substring(data.lastIndexOf("/") + 1);
-            webView.loadUrl("http://www.langolonerd.it/" + page);
+            if(!page.contains("?"))
+                params = "?" + params;
+            else
+                params = "&" + params;
+            webView.loadUrl("http://www.langolonerd.it/" + page + params);
         } else {
-            sendToken();
-            webView.loadUrl("http://www.langolonerd.it");
+            webView.loadUrl("http://www.langolonerd.it/?" + params);
         }
     }
 
