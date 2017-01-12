@@ -41,13 +41,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestHandle;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
 
-import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.util.EncodingUtils;
 
 public class MainActivity extends Activity {
@@ -58,7 +52,6 @@ public class MainActivity extends Activity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    private static AsyncHttpClient httpclient = new AsyncHttpClient();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
