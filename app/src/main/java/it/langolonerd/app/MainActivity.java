@@ -48,6 +48,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.util.EncodingUtils;
 
 public class MainActivity extends Activity {
     private WebView webView;
@@ -61,8 +62,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        sendToken();
-
         setContentView(R.layout.main_activity);
         super.onCreate(savedInstanceState);
 
@@ -89,7 +88,10 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                visible();
+                // The first http call is a POST request that send push tokens to the server
+                // Splash screen has to load until the 2nd http call (loadUrl) finishes
+                if(!url.equalsIgnoreCase("http://www.langolonerd.it/pushreg.php"))
+                    visible();
             }
         });
 
@@ -97,25 +99,14 @@ public class MainActivity extends Activity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
-        // Register app to the server for push notifications
     }
 
     private void sendToken() {
+        // Send the Firebase token to the server
+        // Used for push notification service
         String token = FirebaseInstanceId.getInstance().getToken();
-        RequestParams params = new RequestParams();
-        params.put("token", token);
-        httpclient.post("http://www.langolonerd.it/pushreg.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                System.out.println("SUCCESSO!!!!");
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                System.out.println("Fallito ...");
-            }
-        });
+        byte[] post = EncodingUtils.getBytes("token="+token,"UTF-8");
+        webView.postUrl("http://www.langolonerd.it/pushreg.php", post);
     }
 
     private void visible() {
@@ -150,10 +141,13 @@ public class MainActivity extends Activity {
         String action = intent.getAction();
         String data = intent.getDataString();
         if (Intent.ACTION_VIEW.equals(action) && data != null) {
+            sendToken();
             String page = data.substring(data.lastIndexOf("/") + 1);
             webView.loadUrl("http://www.langolonerd.it/" + page);
-        } else
+        } else {
+            sendToken();
             webView.loadUrl("http://www.langolonerd.it");
+        }
     }
 
     /**
