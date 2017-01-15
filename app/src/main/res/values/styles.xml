@@ -21,5 +21,7 @@
 -->
 
 <resources>
-    <style name="mainAppTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar"></style>
+    <style name="mainAppTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:colorPrimary">?android:attr/colorAccent</item>
+    </style>
 </resources>
