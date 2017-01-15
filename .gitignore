@@ -11,3 +11,5 @@
 
 *.apk
 gradle.properties
+
+app/google-services.json

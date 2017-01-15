@@ -4,12 +4,12 @@
  *
  * This file is part of L'angolo nerd Android application.
  *
- * OpenPGP is free software: you can redistribute it and/or modify
+ * L'angolo nerd is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * OpenPGP is distributed in the hope that it will be useful,
+ * L'angolo nerd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -40,6 +40,10 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class MainActivity extends Activity {
     private WebView webView;
@@ -78,7 +82,19 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                visible();
+                // The first http call is a POST request that send push tokens to the server
+                // Splash screen has to load until the 2nd http call (loadUrl) finishes
+                if(!url.equalsIgnoreCase("http://www.langolonerd.it/pushreg.php"))
+                    visible();
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(url.startsWith("http://www.langolonerd.it") || url.startsWith("www.langolonerd.it"))
+                    view.loadUrl(url);
+                else
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
             }
         });
 
@@ -86,6 +102,15 @@ public class MainActivity extends Activity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private String sendToken() throws UnsupportedEncodingException {
+        // Send the Firebase token to the server
+        // Used for push notification service
+        String token = FirebaseInstanceId.getInstance().getToken();
+        String post = "token=" + URLEncoder.encode(token, "UTF-8");
+        //webView.postUrl("http://www.langolonerd.it/pushreg.php", post.getBytes());
+        return post;
     }
 
     private void visible() {
@@ -119,11 +144,23 @@ public class MainActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         String action = intent.getAction();
         String data = intent.getDataString();
+        String params = "";
+        try {
+            params = sendToken();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         if (Intent.ACTION_VIEW.equals(action) && data != null) {
             String page = data.substring(data.lastIndexOf("/") + 1);
-            webView.loadUrl("http://www.langolonerd.it/" + page);
-        } else
-            webView.loadUrl("http://www.langolonerd.it");
+            if(!page.contains("?"))
+                params = "?" + params;
+            else
+                params = "&" + params;
+            webView.loadUrl("http://www.langolonerd.it/" + page + params);
+        } else {
+            webView.loadUrl("http://www.langolonerd.it/?" + params);
+        }
     }
 
     /**

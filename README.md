@@ -8,8 +8,9 @@ Each feature will be developed on an indipendent `feature/feature_name` branch a
 The app is developed using [Android Studio](https://developer.android.com/studio/index.html) and is under [GPL-3.0 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 
-## Important Notice about Gradle Build
-In order to deploy automatically a `signed` release I had to modify Gradle settings.    
+## Important Notice
+### Gradle build
+In order to automatically deploy a `signed` release I had to modify Gradle settings.
 In `app/build.gradle` I added the `signingConfigs` section, that refers to variables like `MyApp.signing` etc.    
 Those vars needs to be declared in `/gradle.properties` with personal datas like this:
 
@@ -20,3 +21,7 @@ Those vars needs to be declared in `/gradle.properties` with personal datas like
 So, once cloned this repo you will have two options:
 - Remove `signingConfigs` sections from `app/build.gradle`
 - Create and populate `gradle.properties` as above
+
+### Google Services
+Push notifications works with [Firebase](https://www.firebase.com/) and this service need a `google-services.json` file under `app/`.
+This file contains the _API keys_ used to connect the app to the associated Firebase project and, for security reasons, I'll not push it here.
