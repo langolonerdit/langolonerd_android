@@ -87,6 +87,15 @@ public class MainActivity extends Activity {
                 if(!url.equalsIgnoreCase("http://www.langolonerd.it/pushreg.php"))
                     visible();
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(url.startsWith("http://www.langolonerd.it") || url.startsWith("www.langolonerd.it"))
+                    view.loadUrl(url);
+                else
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }
         });
 
         onNewIntent(getIntent());
@@ -141,6 +150,7 @@ public class MainActivity extends Activity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
         if (Intent.ACTION_VIEW.equals(action) && data != null) {
             String page = data.substring(data.lastIndexOf("/") + 1);
             if(!page.contains("?"))
