@@ -24,4 +24,5 @@
     <color name="gray">#BDBDBD</color>
     <color name="lightgray">#EEEEEE</color>
     <color name="white">#FFFFFF</color>
+    <color name="primary_material_light_1">#f5f5f5</color>
 </resources>
