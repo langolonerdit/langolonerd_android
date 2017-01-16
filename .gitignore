@@ -8,3 +8,8 @@
 /captures
 .externalNativeBuild
 .idea
+
+*.apk
+gradle.properties
+
+app/google-services.json

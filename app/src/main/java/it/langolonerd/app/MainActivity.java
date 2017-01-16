@@ -4,12 +4,12 @@
  *
  * This file is part of L'angolo nerd Android application.
  *
- * OpenPGP is free software: you can redistribute it and/or modify
+ * L'angolo nerd is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * OpenPGP is distributed in the hope that it will be useful,
+ * L'angolo nerd is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -20,15 +20,19 @@
 
 package it.langolonerd.app;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -43,6 +47,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class MainActivity extends Activity {
     private WebView webView;
     private CardView cardView;
+    private LoadAsync la;
+    private MainActivity thisActivity;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -53,7 +59,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_activity);
         super.onCreate(savedInstanceState);
-
+        thisActivity = this;
         // set statusbar color
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -63,6 +69,7 @@ public class MainActivity extends Activity {
         // set webview params
         webView = (WebView) findViewById(R.id.webView1);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setUserAgentString("WEBAPP");
         webView.setHorizontalScrollBarEnabled(false);
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 
@@ -78,15 +85,36 @@ public class MainActivity extends Activity {
             public void onPageFinished(WebView view, String url) {
                 visible();
             }
+
+            @SuppressWarnings("deprecation")
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if(url.startsWith("http://www.langolonerd.it") || url.startsWith("www.langolonerd.it"))
+                    view.loadUrl(url);
+                else
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }
+
+            @TargetApi(Build.VERSION_CODES.N)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                String url = request.getUrl().toString();
+                if(url.startsWith("http://www.langolonerd.it") || url.startsWith("www.langolonerd.it"))
+                    view.loadUrl(url);
+                else
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }
         });
 
-        onNewIntent(getIntent());
+        new LoadAsync().execute(webView, getIntent(), thisActivity);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void visible() {
+    public void visible() {
         WebView webview = (WebView) findViewById(R.id.webView1);
         ImageView logo = (ImageView) findViewById(R.id.imageView1);
         ProgressBar bar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -100,7 +128,7 @@ public class MainActivity extends Activity {
         version.setVisibility(View.GONE);
     }
 
-    private void unvisible() {
+    public void unvisible() {
         WebView webview = (WebView) findViewById(R.id.webView1);
         ImageView logo = (ImageView) findViewById(R.id.imageView1);
         ProgressBar bar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -112,16 +140,6 @@ public class MainActivity extends Activity {
         version.setVisibility(View.VISIBLE);
         shadow.setVisibility(View.VISIBLE);
         webview.setVisibility(View.GONE);
-    }
-
-    protected void onNewIntent(Intent intent) {
-        String action = intent.getAction();
-        String data = intent.getDataString();
-        if (Intent.ACTION_VIEW.equals(action) && data != null) {
-            String page = data.substring(data.lastIndexOf("/") + 1);
-            webView.loadUrl("http://www.langolonerd.it/" + page);
-        } else
-            webView.loadUrl("http://www.langolonerd.it");
     }
 
     /**
@@ -157,5 +175,21 @@ public class MainActivity extends Activity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    if (webView.canGoBack()) {
+                        webView.goBack();
+                    } else {
+                        finish();
+                    }
+                    return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
