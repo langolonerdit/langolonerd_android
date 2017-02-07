@@ -43,12 +43,16 @@ public class LoadAsync extends AsyncTask<Object, Void, String> {
 
     @Override
     protected void onPostExecute(String unused) {
+        String app_version = mainActivity.getString(R.string.app_version);
+        Log.d("VER:", "> " + app_version);
         post = "";
         try {
             post = "token=" + URLEncoder.encode(token, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+        post = "ver=" + app_version + "&" + post;
 
         if (Intent.ACTION_VIEW.equals(action) && data != null) {
             String page = data.substring(data.lastIndexOf("/") + 1);
