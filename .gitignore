@@ -8,6 +8,7 @@
 /captures
 .externalNativeBuild
 .idea
+/app/release
 
 *.apk
 gradle.properties
