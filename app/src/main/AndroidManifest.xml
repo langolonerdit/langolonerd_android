@@ -49,6 +49,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="http" android:host="www.langolonerd.it" />
                 <data android:scheme="http" android:host="langolonerd.it" />
+                <data android:scheme="https" android:host="www.langolonerd.it" />
+                <data android:scheme="https" android:host="langolonerd.it" />
             </intent-filter>
         </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

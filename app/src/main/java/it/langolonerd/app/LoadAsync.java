@@ -60,9 +60,9 @@ public class LoadAsync extends AsyncTask<Object, Void, String> {
                 post = "?" + post;
             else
                 post = "&" + post;
-            webView.loadUrl("http://www.langolonerd.it/" + page + post);
+            webView.loadUrl("https://www.langolonerd.it/" + page + post);
         } else {
-            webView.loadUrl("http://www.langolonerd.it/?" + post);
+            webView.loadUrl("https://www.langolonerd.it/?" + post);
         }
     }
 }

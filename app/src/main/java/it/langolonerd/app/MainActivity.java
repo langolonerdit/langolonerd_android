@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
             @SuppressWarnings("deprecation")
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if(url.startsWith("http://www.langolonerd.it") || url.startsWith("www.langolonerd.it"))
+                if(url.startsWith("https://www.langolonerd.it") || url.startsWith("http://www.langolonerd.it") || url.startsWith("www.langolonerd.it"))
                     view.loadUrl(url);
                 else
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                if(url.startsWith("http://www.langolonerd.it") || url.startsWith("www.langolonerd.it"))
+                if(url.startsWith("https://www.langolonerd.it") || url.startsWith("http://www.langolonerd.it") || url.startsWith("www.langolonerd.it"))
                     view.loadUrl(url);
                 else
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
@@ -149,7 +149,7 @@ public class MainActivity extends Activity {
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
                 .setName("L'angolo nerd")
-                .setUrl(Uri.parse("http://www.langolonerd.it"))
+                .setUrl(Uri.parse("https://www.langolonerd.it"))
                 .build();
         return new Action.Builder(Action.TYPE_VIEW)
                 .setObject(object)
